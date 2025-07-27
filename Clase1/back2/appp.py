@@ -12,7 +12,7 @@ def saludo():
         "instancia": "instancia 2"
     })
 @app.route('/')
-def saludo():
+def general():
     return jsonify({
         "informacion": "En instancia 2 correctamente ",
     })
