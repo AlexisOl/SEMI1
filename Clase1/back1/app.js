@@ -9,7 +9,7 @@ const app = express();
 
 
 
-app.use("/rutas", rutas)
+app.use("/", rutas)
 
 
 
