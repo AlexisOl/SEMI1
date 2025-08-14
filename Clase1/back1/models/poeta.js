@@ -19,6 +19,11 @@ const Poeta = sequelize.define('Poeta', {
       model: Nacionalidad,
       key: 'id'
     }
+  },
+  url: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    
   }
 }, {
   tableName: 'poeta',

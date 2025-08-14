@@ -10,9 +10,18 @@ const app = express();
 
 
 
-app.use("/", rutas)
-app.use("/v1", rutasPoemas)
+app.use(cors({
+  origin: [
+    'http://alexxusprueba.s3-website-us-east-1.amazonaws.com', 
+    'http://localhost:4200',
+  ],
+  methods: ['GET','POST','PUT','DELETE'],
+  credentials: true
+}));
 
+// rutas
+app.use("/", rutas);
+app.use("/v1", rutasPoemas);
 
 
 app.use(cors())
