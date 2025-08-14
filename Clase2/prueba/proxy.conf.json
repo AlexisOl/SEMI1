@@ -1,0 +1,10 @@
+    {
+      "/api": {
+        "target": "http://final-270458930.us-east-1.elb.amazonaws.com",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {
+          "^/api": ""
+        }
+      }
+    }
