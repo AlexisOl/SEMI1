@@ -11,7 +11,7 @@ router.post("/cargar", upload.single('file'), PoetaController.cargar.bind(PoetaC
 
 //poemas
 router.get("/poemas", PoemasController.listarPoemas);
-router.post("poemas/visitado", PoemasController.agregarPoemaVisto);
+router.post("/poemas/visitado", PoemasController.agregarPoemaVisto);
 router.get("/redis", PoemasController.crearPoesia);
 
 module.exports = router;
