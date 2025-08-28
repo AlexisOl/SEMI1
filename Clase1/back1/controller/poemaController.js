@@ -74,7 +74,7 @@ const agregarPoemaVisto = async(req, res) => {
   //  const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
     // generacion de set
 
-    const persistenciaSet = await guadarPoema.zIncrBy('poemas:vistas', 1, `poema:${id}:vistas`)
+    const persistenciaSet = await guadarPoema.zIncrBy('poemas:vistas', 1, `poema:${id}`)
 
 
     res.json({ ok: true, vistas: persistencpersistenciaSetia });
