@@ -17,12 +17,6 @@ const { json } = require('body-parser');
 const { RangeByIndex } = require("@valkey/valkey-glide"); 
 const crearPoesia = async (req, res) => {
 
-    const result = await redis.test();
-    if (result.ok) {
-        res.json(result);
-    } else {
-        res.status(500).json(result);
-    }
 
 }
 
