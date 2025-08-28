@@ -1,5 +1,5 @@
-const Poeta = require ('../models/poeta.js');
-const Nacionalidad = require ('../models/Nacionalidad.js');
+const Poeta = require('../models/poeta.js');
+const Nacionalidad = require('../models/Nacionalidad.js');
 const sequelize = require('../Config/DB.js');
 const s3 = require("../Config/s3Config.js")
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
@@ -10,71 +10,117 @@ const {
 
 require('dotenv').config();
 
-const listar = async(req,res) => {
-try {
-        const  poetas = await Poeta.findAll(
-            {
-                include: {
-                    model: Nacionalidad,
-                    atributes: ['tipo']
-                }
-            }
-        );
+const listar = async (req, res) => {
+  try {
+    const poetas = await Poeta.findAll(
+      {
+        include: {
+          model: Nacionalidad,
+          atributes: ['tipo']
+        }
+      }
+    );
 
-        res.json(poetas)
-} catch (error) {
+
+    const poetasFinal = poetas.map(poeta => {
+      const key = poeta.url ? poeta.url.split('/').pop() : null; 
+      const urlFinal = key
+        ? `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(key)}`
+        : null;
+
+      return {
+        ...poeta.toJSON(),
+        url: urlFinal
+      };
+    });
+
+
+    res.json(poetasFinal)
+  } catch (error) {
     res.status(500).json({ error: error.message });
-}
+  }
 }
 
+
+const cargar = async (req, res) => {
+  const file = req.file;
+  const { nombre, idNacionalidad } = req.body;
+
+  if (!file) return res.status(400).json({ error: "No se ha enviado ningún archivo" });
+
+  const fileName = `${Date.now()}-${file.originalname}`;
+
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: fileName,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  try {
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${fileName}`;
+    res.status(200).json({
+      message: "Archivo subido con éxito",
+      url: fileUrl,
+    });
+  } catch (err) {
+    console.error("Error al subir a S3:", err);
+    res.status(500).json({ error: "Error al subir el archivo" });
+  }
+}
 
 const crearPoeta = async (req, res) => {
   const file = req.file;
-  //const { nombre, idNacionalidad } = req.body;
+  const { nombre, idNacionalidad } = req.body;
+  const t = await sequelize.transaction();
+  
+  
+  if (!file) return res.status(400).json({ error: "No se ha enviado ningún archivo" });
 
-  if (!file) return res.status(400).json({ error: "No se subió ninguna imagen" });
+  const fileName = `${Date.now()}-${file.originalname}`;
 
-  const nuevoNombre = generarNombreArchivo(imagen.originalname);
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: fileName,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
 
-  await subirArchivo({
-    name: nuevoNombre,
-    buffer: imagen.buffer,
-    mimetype: imagen.mimetype
-  });
+  try {
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
 
-  res.status(200).json({ ok: true, mensaje: "Poeta creado con éxito" });
-};
-
-const cargar = async(req, res) => {
-    const file = req.file;
-    if (!file) return res.status(400).json({ error: "No se ha enviado ningún archivo" });
-
-    const fileName = `${Date.now()}-${file.originalname}`;
-
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: fileName,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    };
-
-    try {
-      const command = new PutObjectCommand(params);
-      await s3.send(command);
-
-      const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${fileName}`;
-      res.status(200).json({
-        message: "Archivo subido con éxito",
-        url: fileUrl,
-      });
-    } catch (err) {
-      console.error("Error al subir a S3:", err);
-      res.status(500).json({ error: "Error al subir el archivo" });
-    }}
+    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${fileName}`;
 
 
 
-  // Nombre único
+
+    console.log(nombre, idNacionalidad, "aca");
+    
+    await Poeta.create(
+      {
+        nombre,
+        nacionalidad: idNacionalidad,
+        url: fileName
+      },
+      { transaction: t }
+    );
+
+    await t.commit();
+    res.json({ ok: true, mensaje: "Poeta creado con éxito" });
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+    res.status(500).json({ error: "Error al crear el poeta" });
+  }
+}
+
+
+
+// Nombre único
 
 
 
@@ -124,7 +170,7 @@ const cargar = async(req, res) => {
 
 
 module.exports = {
-    listar,
-    crearPoeta,
-    cargar
+  listar,
+  crearPoeta,
+  cargar
 }
