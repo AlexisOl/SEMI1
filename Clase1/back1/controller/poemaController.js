@@ -76,10 +76,6 @@ const agregarPoemaVisto = async(req, res) => {
 
     const persistenciaSet = await guadarPoema.zincrby("poemas",1, `poema:${id}`);
 
-   // const top = await guadarPoema.sendCommand("ZRANGE", ["poemas", "-3", "-1", "WITHSCORES"]);
-
-
-
     res.json({ ok: true, vistas: persistenciaSet, top: "top" });
 
 
@@ -92,11 +88,22 @@ const agregarPoemaVisto = async(req, res) => {
 }
 
 const detemniarVistasPoemas = async(req, res) => {
-        const guadarPoema = await getRedis();
-
-
         try {
+            const guadarPoema = await getRedis();
 
+            const top = await guadarPoema.zrange("peomas", RangeByIndex(-3, -1));
+
+            console.log(top);
+
+            const poemasTop = Poema.findByPk(
+                {
+
+                }
+            )
+            
+    res.json({ ok: true, vistas: "persistenciaSet", top: top });
+            
+            
         }catch(err) {
                 res.json({ ok: false, error: err });   }
  
@@ -104,5 +111,6 @@ const detemniarVistasPoemas = async(req, res) => {
 module.exports = {
     crearPoesia,
     listarPoemas,
-    agregarPoemaVisto
+    agregarPoemaVisto,
+    detemniarVistasPoemas
 }
