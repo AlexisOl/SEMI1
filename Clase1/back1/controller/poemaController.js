@@ -92,9 +92,10 @@ const detemniarVistasPoemas = async(req, res) => {
         try {
             const guadarPoema = await getRedis();
 
+            const rango = RangeByIndex(-3, -1)
             const top = await guadarPoema.zrange(
                 "poemas",
-                RangeByIndex(-3, -1),
+                rango,
                 { WITHSCORES: true }    
             );
 
