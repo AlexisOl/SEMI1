@@ -11,3 +11,14 @@ export interface poetas {
     nombre: String;
     nacionalidad: nacionalidad
 }
+
+
+export interface poemas {
+    id?: Number;
+    nombre: String;
+    nacionalidad: nacionalidad
+}
+
+export interface categoria{
+
+}

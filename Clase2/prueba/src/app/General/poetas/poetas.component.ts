@@ -7,20 +7,24 @@ import { HeaderComponent } from '../../utils/header/header.component';
 import { PoemasServicioService } from '../services/poemas-servicio.service';
 import { PoetasServiceService } from '../services/poetas-service.service';
 import { poetas } from '../../models/poemas';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-poetas',
-  imports: [HeaderComponent, CardModule, ButtonModule, PanelModule, PaginatorModule],
+  imports: [HeaderComponent, CardModule, ButtonModule, PanelModule, PaginatorModule,
+    DialogModule
+  ],
   templateUrl: './poetas.component.html',
   styleUrl: './poetas.component.css'
 })
 export class PoetasComponent implements OnInit {
 
   first: number = 0;
-  rows: number = 10;
+  rows: number = 6;
   paginatedItems: any[] = [];
   items: poetas[] = []
   poetasServicio = inject(PoetasServiceService)
+
 
   onPageChange(event: any) {
     this.first = event.first;

@@ -1,21 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../utils/header/header.component";
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PoemasServicioService } from '../services/poemas-servicio.service';
+import { poemas } from '../../models/poemas';
+import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import { DialogModule } from 'primeng/dialog';
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-vista-global',
-  imports: [HeaderComponent, CardModule, ButtonModule, PanelModule, PaginatorModule],
+  imports: [HeaderComponent, DatePipe, CardModule, ButtonModule, PanelModule, PaginatorModule, DialogModule, FileUploadModule],
   templateUrl: './vista-global.component.html',
   styleUrl: './vista-global.component.css'
 })
 export class VistaGlobalComponent implements OnInit{
 
     first: number = 0;
-    rows: number = 10;
-    paginatedItems: number[] = [];
-    items = Array.from({ length: 15 }, (_, i) => i + 1);
+    rows: number = 6;
+    paginatedItems: any[] = [];
+    items:poemas[] = []
+    poemasServicio = inject(PoemasServicioService)
+    visible: boolean = false
+    poemaSeleccionado: any;
+
 
     onPageChange(event: any) {
         this.first = event.first;
@@ -25,11 +35,25 @@ export class VistaGlobalComponent implements OnInit{
     }
 
       ngOnInit() {
-    this.updatePaginatedItems();
+      this.poemasServicio.obtenerBodegas().subscribe(
+      (valores) => {
+        console.log(valores);
+        this.items = valores
+        this.updatePaginatedItems();
+
+
+
+      }
+    )
   }
 
 
-
+ showDialog(item: any) {
+        this.visible = true;
+        console.log(item);
+        
+        this.poemaSeleccionado = item ? item: null
+  }
   updatePaginatedItems() {
     this.paginatedItems = this.items.slice(this.first, this.first + this.rows);
   }

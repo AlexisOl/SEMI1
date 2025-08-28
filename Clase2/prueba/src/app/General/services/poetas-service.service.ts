@@ -30,7 +30,6 @@ export class PoetasServiceService {
         {
           next: (p) => {
             console.log(p);
-            
             this.listadoAutores.set(p)
           }, 
           error: (er) => {
