@@ -12,7 +12,8 @@ require('dotenv').config();
 const redis = require('../Config/Valkey.js');
 const Poema = require('../models/Poema.js');
 const Categoria = require('../models/Categoria.js');
-const {conectar, getRedis} = require('../Config/Valkey.js')
+const {conectar, getRedis} = require('../Config/Valkey.js');
+const { json } = require('body-parser');
 const crearPoesia = async (req, res) => {
 
     const result = await redis.test();
@@ -60,12 +61,26 @@ const listarPoemas = async (req, res) => {
     }
 }
 
-const agregarVista = async(req, res) => {
+const agregarPoemaVisto = async(req, res) => {
     const {id} =req.body
+
+
+    try {
+    const guadarPoema = await getRedis();
+    
+    const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
+
+
+    res.json({ ok: true, vistas: persistencia });
+    } catch(err) {
+    res.json({ ok: false, vistas: err });
+
+    }
 
 
 }
 module.exports = {
     crearPoesia,
-    listarPoemas
+    listarPoemas,
+    agregarPoemaVisto
 }
