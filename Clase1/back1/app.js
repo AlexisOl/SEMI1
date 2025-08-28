@@ -17,10 +17,12 @@ app.use(cors({
   methods: ['GET','POST','PUT','DELETE'],
   credentials: true
 }));
+app.use(express.json());
+
 
 app.use("/", rutas);
 app.use("/v1", rutasPoemas);
-app.use(express.json());
+
 
 
 //primero se conecta a redis
