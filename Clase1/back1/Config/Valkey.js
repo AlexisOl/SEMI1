@@ -1,4 +1,5 @@
 const { ClosingError, GlideClusterClient, Logger } = require("@valkey/valkey-glide");
+
 let client;
 
 const conectar = async(req, res) => {

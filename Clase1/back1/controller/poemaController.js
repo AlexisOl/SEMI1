@@ -66,12 +66,12 @@ const agregarPoemaVisto = async(req, res) => {
     console.log(id);
     
     //solo 1 elemento
-  //  const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
+    const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
     // generacion de set
 
-    const persistenciaSet = await guadarPoema.zincrby("poemas",1, `poema:${id}`);
+   // const persistenciaSet = await guadarPoema.zincrby("poemas",1, `poema:${id}`);
 
-    res.json({ ok: true, vistas: persistenciaSet, top: "top" });
+    res.json({ ok: true, vistas: persistencia, top: "top" });
 
 
     } catch(err) {
