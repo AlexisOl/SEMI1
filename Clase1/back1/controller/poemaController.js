@@ -82,6 +82,8 @@ const agregarPoemaVisto = async(req, res) => {
 
 
     } catch(err) {
+        console.log(err, err.message);
+        
     res.json({ ok: false, vistas: err });
 
     }
