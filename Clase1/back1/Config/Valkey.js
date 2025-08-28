@@ -1,24 +1,31 @@
 const { ClosingError, GlideClusterClient, Logger } = require("@valkey/valkey-glide");
+let client;
 
-const test = async (req, res) => {
-  Logger.setLoggerConfig("info");
-  let client;
-  try {
+const conectar = async(req, res) => {
+  if (!client) {
+    Logger.setLoggerConfig("info");
     client = await GlideClusterClient.createClient({
       addresses: [{ host: process.env.VALKEY_HOST, port: 6379 }],
       useTLS: true
     });
-    await client.set("foo", "bar");
-    const value = await client.get("foo");
-    return { ok: true, value: value?.toString() };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  } finally {
-    if (client) client.close();
+    console.log("conectado");
   }
+  return client;
 }
 
 
+const getRedis= async(req, res) => {
+  if(!client) {
+    throw new Error("no esta conectado a redis.");
+  }
+
+  return client
+}
+
+
+
+
 module.exports = {
-    test
+    conectar,
+    getRedis
 };

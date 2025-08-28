@@ -4,6 +4,8 @@ const PUERTO = process.env.PORT || 3210;
 const rutas = require('./routes/rutas.routes');
 const rutasPoemas = require('./routes/poemas.routes');
 
+const {conectar} = require('./Config/Valkey')
+
 const app = express();
 
 app.use(cors({
@@ -20,6 +22,10 @@ app.use("/", rutas);
 app.use("/v1", rutasPoemas);
 app.use(express.json());
 
+
+//primero se conecta a redis
+conectar().then(() => {
 app.listen(PUERTO, () => {
   console.log(`La aplicación está escuchando en http://localhost:${PUERTO}`);
 });
+})
