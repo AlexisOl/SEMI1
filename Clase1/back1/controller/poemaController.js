@@ -101,13 +101,17 @@ const detemniarVistasPoemas = async(req, res) => {
 
             console.log(top);
 
-            const poemasTop = Poema.findByPk(
-                {
+            //obtener ids
+            const ids = top.map((x => parseInt(x.split(":")[1])))
 
-                }
-            )
+
+            const poemasTop = await Poema.findAll({
+                        where: { id: ids },
+                        include: [{ model: Poeta, as: 'poeta', attributes: ['nombre'] }]
+                    });
+
+            res.json({ ok: true, top: poemasTop });
             
-    res.json({ ok: true, vistas: "persistenciaSet", top: top });
             
             
         }catch(err) {
