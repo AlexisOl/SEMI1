@@ -14,7 +14,7 @@ const Poema = require('../models/Poema.js');
 const Categoria = require('../models/Categoria.js');
 const {conectar, getRedis} = require('../Config/Valkey.js');
 const { json } = require('body-parser');
-const { ZRangeByIndex } = require("@valkey/valkey-glide"); 
+const { RangeByIndex } = require("@valkey/valkey-glide"); 
 const crearPoesia = async (req, res) => {
 
     const result = await redis.test();
@@ -94,7 +94,7 @@ const detemniarVistasPoemas = async(req, res) => {
 
             const top = await guadarPoema.zrange(
                 "poemas",
-                ZRangeByIndex(-3, -1),
+                RangeByIndex(-3, -1),
                 { WITHSCORES: true }    
             );
 
