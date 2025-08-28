@@ -95,7 +95,7 @@ const detemniarVistasPoemas = async(req, res) => {
             const rango = RangeByIndex(-3, -1)
             const top = await guadarPoema.zrange(
                 "poemas",
-                rango,
+                { start: -3, end: -1 },
                 { WITHSCORES: true }    
             );
 
