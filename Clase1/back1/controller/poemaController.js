@@ -74,12 +74,12 @@ const agregarPoemaVisto = async(req, res) => {
   //  const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
     // generacion de set
 
-    const persistenciaSet = await guadarPoema.zAdd( 'poemas', {member:`poema:${id}`, score: 1, INCR: true })
+    const persistenciaSet = await guadarPoema.sendCommand("ZINCRBY", ["poemas", "1", `poema:${id}`]);
 
-    const top = await client.zRange('poemas', -3, -1, { WITHSCORES: true });
+    const top = await guadarPoema.sendCommand("ZRANGE", ["poemas", "-3", "-1", "WITHSCORES"]);
 
 
-    
+
     res.json({ ok: true, vistas: persistenciaSet, top: top });
 
 
