@@ -68,6 +68,8 @@ const agregarPoemaVisto = async(req, res) => {
     try {
     const guadarPoema = await getRedis();
     
+    console.log(id);
+    
     const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
 
 
