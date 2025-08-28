@@ -70,16 +70,29 @@ const agregarPoemaVisto = async(req, res) => {
     
     console.log(id);
     
-    const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
+    //solo 1 elemento
+  //  const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
+    // generacion de set
+
+    const persistenciaSet = await guadarPoema.zIncrBy('poemas:vistas', 1, `poema:${id}:vistas`)
 
 
-    res.json({ ok: true, vistas: persistencia });
+    res.json({ ok: true, vistas: persistencpersistenciaSetia });
     } catch(err) {
     res.json({ ok: false, vistas: err });
 
     }
+}
+
+const detemniarVistasPoemas = async(req, res) => {
+        const guadarPoema = await getRedis();
 
 
+        try {
+
+        }catch(err) {
+                res.json({ ok: false, error: err });   }
+ 
 }
 module.exports = {
     crearPoesia,
