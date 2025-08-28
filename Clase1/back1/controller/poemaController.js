@@ -76,8 +76,11 @@ const agregarPoemaVisto = async(req, res) => {
 
     const persistenciaSet = await guadarPoema.zIncrBy('poemas:vistas', 1, `poema:${id}`)
 
+    const top = await client.zRevRange('poemas:vistas', 0, 4, { WITHSCORES: true });
 
-    res.json({ ok: true, vistas: persistenciaSet });
+    res.json({ ok: true, vistas: persistenciaSet, top: top });
+
+
     } catch(err) {
     res.json({ ok: false, vistas: err });
 
