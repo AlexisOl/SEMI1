@@ -1,58 +1,115 @@
-<app-header/>
+<app-header />
 
-<!-- panel-->
-<p-panel header="Listado de Poemas">
-<div     style="
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-     
-    "
-    >
+<p-splitter [style]="{ height: '1000px' }" [panelSizes]="[25, 75]" class="mb-5" layout="vertical">
+  <!-- Panel TOP POEMAS -->
+  <ng-template #panel>
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+      ">
+      @for (item of this.poemasServicio.topPoemas(); track $index) {
+        <p-card
+          [style]="{
+            width: '100%',
+            overflow: 'hidden',
+            borderRadius: '1rem',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          }"
+        >
+          <ng-template #title>
+            <span style="font-weight: 600; font-size: 1.2rem;">{{ item.nombre }}</span>
+          </ng-template>
+          <ng-template #subtitle>
+            <span style="color: #6b7280;">{{ item.poeta.nombre }} • {{ item.fecha | date }}</span>
+          </ng-template>
+          <p style="margin-top: 0.5rem; line-height: 1.5; color: #374151;">
+            {{ item.texto }}
+          </p>
+        </p-card>
+      }
+    </div>
+  </ng-template>
 
-        <!-- aca solo darle para columnas-->
-    @for (item of paginatedItems; track $index) {
-<p-card [style]="{ width: '25rem', overflow: 'hidden' }">
-    <ng-template #header>
-        <img alt="Card" class="w-full" src="{{item.url}}" />
-    </ng-template>
-    <ng-template #title> {{item.nombre}} </ng-template>
-    <ng-template #subtitle> {{item.categorium.tipo }} </ng-template>
-    <p > {{item.fecha | date}} </p>
-    
+  <!-- Panel LISTADO -->
+  <ng-template #panel>
+    <div class="h-full w-full mb-2">
+      <p-scrollpanel [style]="{ width: '100%', height: '100%' }">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+          "
+        >
+          @for (item of paginatedItems; track $index) {
+            <p-card
+              [style]="{
+                width: '100%',
+                overflow: 'hidden',
+                borderRadius: '1rem',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+              }"
+            >
+              <ng-template #header>
+                <img
+                  alt="Card"
+                  class="w-full"
+                  style="border-radius: 0.75rem 0.75rem 0 0;"
+                  src="{{ item.url }}"
+                />
+              </ng-template>
+              <ng-template #title>
+                <span style="font-weight: 600;">{{ item.nombre }}</span>
+              </ng-template>
+              <ng-template #subtitle>
+                <span style="color: #6b7280;">{{ item.categorium.tipo }}</span>
+              </ng-template>
+              <p style="color: #374151; margin: 0.5rem 0;">{{ item.fecha | date }}</p>
 
-    <ng-template #footer>
-        <div class="flex gap-4 mt-1">
-            <p-button label="Leer" class="w-full" styleClass="w-full" 
-            (onClick)="this.showDialog(item)"/>
+              <ng-template #footer>
+                <div class="flex gap-4 mt-1">
+                  <p-button
+                    label="Leer"
+                    class="w-full"
+                    styleClass="w-full"
+                    (onClick)="this.showDialog(item)"
+                  />
+                </div>
+              </ng-template>
+            </p-card>
+          }
         </div>
-    </ng-template>
-</p-card>
-    }
 
-    <!-- paginator-->
-</div>
-     <p-paginator (onPageChange)="onPageChange($event)" 
-     [first]="first" 
-     [rows]="rows" 
-     [totalRecords]="items.length" [rowsPerPageOptions]="[3, 6, 10]" />
-
-</p-panel>
-
-
-
-<!-- vista global-->
-<p-dialog header="Poema" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }" 
->
-    <span class="p-text-secondary block mb-8">{{this.poemaSeleccionado?.nombre}}</span>
-  
-    <div class="flex items-center gap-1 mb-2">
-        <label for="Nacionalidad" class="font-semibold w-24" >{{this.poemaSeleccionado?.texto}}</label>
+        <!-- paginator -->
+        <div style="margin-top: 1rem; display: flex; justify-content: center;">
+          <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="items.length"
+            [rowsPerPageOptions]="[3, 6, 10]"
+          />
+        </div>
+      </p-scrollpanel>
     </div>
+  </ng-template>
+</p-splitter>
 
+<!-- vista global -->
+<p-dialog header="Poema" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <span class="p-text-secondary block mb-8">{{ this.poemaSeleccionado?.nombre }}</span>
 
-    <div class="flex justify-end gap-2">
-        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-        <p-button label="Save" (click)="visible = false" />
-    </div>
+  <div class="flex items-center gap-1 mb-2">
+    <label for="Nacionalidad" class="font-semibold w-24">
+      {{ this.poemaSeleccionado?.texto }}
+    </label>
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+    <p-button label="Save" (click)="visible = false" />
+  </div>
 </p-dialog>

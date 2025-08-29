@@ -39,4 +39,14 @@ export class PoetasServiceService {
         }
       )
   }
+
+
+  registrarPoeta(poeta:poetas, archivo: File): Observable<any> {
+      const formData = new FormData();
+  formData.append('nombre', String(poeta.nombre));
+  formData.append('idNacionalidad', String(poeta.nacionalidad));
+  formData.append('file', archivo);
+
+  return this.http.post(this.direccion, formData);
+  }
 }

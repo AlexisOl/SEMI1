@@ -9,12 +9,23 @@ import { poemas } from '../../models/poemas';
 import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { DialogModule } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
-
+import { SplitterModule } from 'primeng/splitter';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 @Component({
   selector: 'app-vista-global',
-  imports: [HeaderComponent, DatePipe, CardModule, ButtonModule, PanelModule, PaginatorModule, DialogModule, FileUploadModule],
+  imports: [HeaderComponent, SplitterModule,DatePipe, ScrollPanelModule, CardModule, ButtonModule, PanelModule, PaginatorModule, DialogModule, FileUploadModule],
   templateUrl: './vista-global.component.html',
-  styleUrl: './vista-global.component.css'
+  styleUrl: './vista-global.component.css',
+      styles: [ `:host ::ng-deep {
+    .p-scrollpanel {
+        &.custombar {
+            .p-scrollpanel-bar {
+                background-color: var(--p-primary-color);
+            }
+        }
+    }
+}`
+    ],
 })
 export class VistaGlobalComponent implements OnInit{
 
@@ -27,6 +38,7 @@ export class VistaGlobalComponent implements OnInit{
     poemaSeleccionado: any;
 
 
+  
     onPageChange(event: any) {
         this.first = event.first;
         this.rows = event.rows;
@@ -53,9 +65,22 @@ export class VistaGlobalComponent implements OnInit{
         console.log(item);
         
         this.poemaSeleccionado = item ? item: null
+
+
+        this.incrementarVisita(item? item.id:0)
   }
   updatePaginatedItems() {
     this.paginatedItems = this.items.slice(this.first, this.first + this.rows);
+  }
+
+
+  incrementarVisita(id: number){
+    this.poemasServicio.agreagarPoemaVisitado(id).subscribe(
+      (next) => {
+        console.log('poema visitado'+ id);
+        
+      }
+    )
   }
 
 }

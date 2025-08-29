@@ -14,11 +14,18 @@ export interface poetas {
 
 
 export interface poemas {
-    id?: Number;
-    nombre: String;
-    nacionalidad: nacionalidad
+  id?: number;
+  nombre: string;
+  texto: string;
+  url: string;
+  fecha?: string; 
+    id_Poeta: number;
+  id_categoria: number;
+  poeta: poetas;
+  categorium: categoria;
 }
 
 export interface categoria{
-
+ id: number;
+  tipo: string;
 }

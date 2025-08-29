@@ -13,9 +13,11 @@ export class PoemasServicioService {
 
   //usar signal
   public listadoPoemas = signal<poemas[]>([]);
+  public topPoemas = signal<poemas[]>([]);
 
   constructor(private http: HttpClient) {
     this.obtenerListadoPoemas()
+    this.verTopPoemas()
   }
 
     obtenerBodegas(): Observable<poemas[]> {
@@ -30,6 +32,31 @@ export class PoemasServicioService {
         next: (p) => {
           console.log(p);
           this.listadoPoemas.set(p)
+        },
+        error: (er) => {
+          console.error(er);
+
+        }
+      }
+    )
+  }
+
+
+  agreagarPoemaVisitado(id: number):Observable<any[]> {
+      return this.http.post<poemas[]>(
+        this.direccion+"/visitado", {id: id}
+      )
+  }
+
+
+  verTopPoemas() {
+  return this.http.get<poemas[]>(
+      this.direccion+"/top"
+    ).subscribe(
+      {
+        next: (p:any) => {
+          console.log(p);
+          this.topPoemas.set(p.top)
         },
         error: (er) => {
           console.error(er);
