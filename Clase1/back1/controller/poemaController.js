@@ -96,6 +96,7 @@ const detemniarVistasPoemas = async(req, res) => {
             console.log(top);
 
             //obtener ids
+            // poemas:id
             const ids = top.map((x => parseInt(x.split(":")[1])))
 
 
