@@ -66,12 +66,12 @@ const agregarPoemaVisto = async(req, res) => {
     console.log(id);
     
     //solo 1 elemento
-    //const persistencia = await guadarPoema.incr(`poema:${id}:vistas`);
+    //const persistenciaSet = await guadarPoema.incr(`poema:${id}:vistas`);
     // generacion de set
 
     const persistenciaSet = await guadarPoema.zincrby("poemas",1, `poema:${id}`);
 
-    res.json({ ok: true, vistas: persistencia, top: "top" });
+    res.json({ ok: true, vistas: persistenciaSet, top: "top" });
 
 
     } catch(err) {
@@ -99,7 +99,8 @@ const detemniarVistasPoemas = async(req, res) => {
             // poemas:id
             const ids = top.map((x => parseInt(x.split(":")[1])))
 
-
+            console.log(ids);
+            
             const poemasTop = await Poema.findAll({
                         where: { id: ids },
                         include: [{ model: Poeta, as: 'poeta', attributes: ['nombre'] }]
