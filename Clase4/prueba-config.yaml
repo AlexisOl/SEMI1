@@ -1,0 +1,7 @@
+## para envio de info importante
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: prueba-config
+data:
+  MESSAGE: "saludos de prueba para ss1"  # datos de configuracion

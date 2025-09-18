@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: prueba-service
+spec:
+  selector: ## busca a donde enviar el trafico
+    app: prueba-k8s ## encuentra el pod por la etiqueta
+  ports:
+  - port: 80 ## puerto donde escucha el servicio
+    targetPort: 3001 # puerto del pod general a donde deberia ir el trafico
+  type: LoadBalancer ## hace el servicio accesible para afuera del cluster

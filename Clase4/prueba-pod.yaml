@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prueba-pod  # nombre de pod
+spec:
+  containers: # lista de los contenedores a usar
+  - name: prueba-contenedor   # nombre del contenedor
+    image: alexxus/prueba:v1    # imagen del contenendor
+    ports:
+    - containerPort: 3001   # puerto de la aplicacion

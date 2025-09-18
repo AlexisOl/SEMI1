@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:   
+  name: prueba-deployment
+spec: 
+  replicas: 3 ## corre 3 copias
+  selector:
+    matchLabels:
+      app: prueba-k8s ## nombre para que encuentre los pods
+  template:
+    metadata:
+      labels:
+        app: prueba-k8s  ## etiqueta del pod
+    spec:
+      containers:  ## especifica el contenedor la imagen
+      - name: prueba-container
+        image: alexxus/prueba:v1  ## imagen del docker hub
+        ports:
+        - containerPort: 3001  #VALORES DE CONFIGURACION
+        env:
+        - name: MESSAGE ## entonro para mensajes
+          valueFrom: 
+            configMapKeyRef:
+              name: prueba-config
+              key: MESSAGE
+        - name: API_KEY ## entonro para LLAVES
+          valueFrom: 
+            secretKeyRef:
+              name: prueba-secret
+              key: API_KEY
