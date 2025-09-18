@@ -4,7 +4,7 @@ const mensajeController = require("../controller/MensajeController")
 
 
 router.get("/ping", mensajeController.ping) 
-router.post("/", mensajeController.obtenerTodo) 
-router.get("/", mensajeController.registro)
+router.post("/", mensajeController.registro) 
+router.get("/", mensajeController.obtenerTodo)
 
 module.exports = router
