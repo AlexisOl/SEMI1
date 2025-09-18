@@ -1,0 +1,31 @@
+    <h1>Microservicios: Usuarios y Mensajes</h1>
+
+    <!-- Sección Usuarios -->
+    <div class="container">
+        <h2>Registrar Usuario</h2>
+        <input type="text" id="username" placeholder="Username" [(ngModel)]="this.username">
+        <input type="password" id="password" placeholder="Password" [(ngModel)]="this.password">
+        <input type="text" id="pais" placeholder="País" [(ngModel)]="this.pais">
+        <button (click)="registrarUsuario()">Registrar</button>
+
+        <h3>Usuarios registrados:</h3>
+        <ul id="usuariosList"></ul>
+        @for (item of this.usuarios; track $index) {
+        <label>Usuario No. {{$index+1}}</label>
+        <input type="text" id="username" [readOnly]="true" [value]="item.username">
+        <input type="text" id="pais" [readOnly]="true" placeholder="País" [value]="item.pais">
+        }
+    </div>
+
+    <!-- Sección Mensajes -->
+    <div class="container">
+        <h2>Registrar Mensaje</h2>
+        <input type="number" id="idUsuarioMsg" placeholder="ID Usuario">
+        <input type="text" id="comentario" placeholder="Comentario">
+        <input type="date" id="fecha">
+        <button onclick="registrarMensaje()">Enviar</button>
+
+        <h3>Mensajes registrados:</h3>
+        <ul id="mensajesList"></ul>
+        <button onclick="obtenerMensajes()">Actualizar lista</button>
+    </div>

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: usuario
-        image: alexxus/ms-prueba-usuario:v1
+        image: alexxus/ms-prueba-usuario:v2
         ports:
         - containerPort: 3212
         env:
