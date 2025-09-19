@@ -1,6 +1,8 @@
+declare var window: any;
+
 export const environment = {
     
-     USUARIO_API : 'http://aa5a395580167470a8c0c4c5dad81177-699102477.us-east-1.elb.amazonaws.com',
- MENSAJE_API : 'http://afc69a3d184e545cb9626383545ca8e0-172412157.us-east-1.elb.amazonaws.com'
-
+  production: true,
+  USUARIO_API: window.__env?.USUARIO_API,
+  MENSAJE_API: window.__env?.MENSAJE_API
 };
