@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mensaje-deployment
+  labels:
+    app: mensajes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mensajes
+  template:
+    metadata:
+      labels:
+        app: mensajes
+    spec:
+      containers:
+      - name: mensajes
+        image: alexxus/microservicio-mensaje-ss1:v2
+        ports:
+        - containerPort: 3211
+        env:
+        - name: DB_HOST
+          value: "microservicio-chat-ss1-prueba.cctockmoifnj.us-east-1.rds.amazonaws.com"
+        - name: DB_USER
+          value: "admin"
+        - name: DB_PASSWORD
+          value: "password"
+        - name: DATABASE
+          value: "microservicioChat"
+      
