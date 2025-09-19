@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors({
   origin: [
-    'http://alexxusprueba.s3-website-us-east-1.amazonaws.com',
+    'http://abb34759f3000404b8b363b6494ff44b-250625271.us-east-1.elb.amazonaws.com',
     'http://clase2semi12025.s3-website-us-east-1.amazonaws.com', 
     'http://localhost:4200',
   ],

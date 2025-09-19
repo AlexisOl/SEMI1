@@ -25,7 +25,7 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.urlDevelop}`, usuario);
   }
 
-  obtenerUsuarioPorId(id: number): Observable<Usuario> {
+  obtenerUsuarioPorId(id: Number): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.urlDevelop}/${id}`);
   }
 

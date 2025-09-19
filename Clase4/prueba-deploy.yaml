@@ -14,7 +14,7 @@ spec:
     spec:
       containers:  ## especifica el contenedor la imagen
       - name: prueba-container
-        image: alexxus/prueba:v1  ## imagen del docker hub
+        image: alexxus/pruebaclasess1:v1  ## imagen del docker hub
         ports:
         - containerPort: 3001  #VALORES DE CONFIGURACION
         env:

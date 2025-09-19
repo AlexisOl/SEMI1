@@ -1,31 +1,39 @@
-    <h1>Microservicios: Usuarios y Mensajes</h1>
+<h1>Microservicios: Usuarios y Mensajes</h1>
 
-    <!-- Sección Usuarios -->
-    <div class="container">
-        <h2>Registrar Usuario</h2>
-        <input type="text" id="username" placeholder="Username" [(ngModel)]="this.username">
-        <input type="password" id="password" placeholder="Password" [(ngModel)]="this.password">
-        <input type="text" id="pais" placeholder="País" [(ngModel)]="this.pais">
-        <button (click)="registrarUsuario()">Registrar</button>
+<!-- Sección Usuarios -->
+<div class="container">
+    <h2>Registrar Usuario</h2>
+    <input type="text" id="username" placeholder="Username" [(ngModel)]="this.username">
+    <input type="password" id="password" placeholder="Password" [(ngModel)]="this.password">
+    <input type="text" id="pais" placeholder="País" [(ngModel)]="this.pais">
+    <button (click)="registrarUsuario()">Registrar</button>
 
-        <h3>Usuarios registrados:</h3>
-        <ul id="usuariosList"></ul>
+    <h3>Usuarios registrados:</h3>
+    <ul id="usuariosList"></ul>
+    @for (item of this.usuarios; track $index) {
+    <label>Usuario No. {{$index+1}}</label>
+    <input type="text" id="username" [readOnly]="true" [value]="item.username">
+    <input type="text" id="pais" [readOnly]="true" placeholder="País" [value]="item.pais">
+    }
+</div>
+
+<!-- Sección Mensajes -->
+<div class="container">
+    <h2>Registrar Mensaje</h2>
+
+    <nz-select [(ngModel)]="seleccionado" placeholder="ID Usuario">
         @for (item of this.usuarios; track $index) {
-        <label>Usuario No. {{$index+1}}</label>
-        <input type="text" id="username" [readOnly]="true" [value]="item.username">
-        <input type="text" id="pais" [readOnly]="true" placeholder="País" [value]="item.pais">
+        <nz-option nzValue="{{item.id}}" nzLabel="{{item.username}}"></nz-option>
         }
-    </div>
+    </nz-select>
+    <input type="text" id="comentario" [(ngModel)]="this.comentario" placeholder="Comentario">
+    <button (click)="registrarMensaje()">Enviar</button>
 
-    <!-- Sección Mensajes -->
-    <div class="container">
-        <h2>Registrar Mensaje</h2>
-        <input type="number" id="idUsuarioMsg" placeholder="ID Usuario">
-        <input type="text" id="comentario" placeholder="Comentario">
-        <input type="date" id="fecha">
-        <button onclick="registrarMensaje()">Enviar</button>
-
-        <h3>Mensajes registrados:</h3>
-        <ul id="mensajesList"></ul>
-        <button onclick="obtenerMensajes()">Actualizar lista</button>
-    </div>
+    <h3>Mensajes registrados:</h3>
+    <ul id="mensajesList"></ul>
+        @for (item of this.mensajes; track $index) {
+    <label>Comentario No. {{$index+1}} - <b>{{item.usuario}}</b></label>
+    <input type="text" id="comentario" [readOnly]="true" [value]="item.comentario">
+    <input type="date" id="fecha" [readOnly]="true" placeholder="fecha" [value]="item.fecha">
+    }
+</div>

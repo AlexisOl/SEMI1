@@ -1,4 +1,7 @@
+declare var window: any;
+
 export const environment = {
-USUARIO_API : 'http://localhost:3212',
- MENSAJE_API : 'http://localhost:3211'
+  production: true,
+  USUARIO_API: window.__env?.USUARIO_API,
+  MENSAJE_API: window.__env?.MENSAJE_API
 };
